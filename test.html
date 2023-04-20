@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>투두 리스트</title>
+    <style>
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        margin: 10px 0;
+        padding: 15px;
+        background-color: #8bb7f0;
+      }
+      .completed {
+        text-decoration: line-through;
+      }
+      .delete-btn {
+        float: right;
+        
+      }
+    </style>
+  </head>
+  <body>
+    
+    <h1>Todo List</h1>
+    <input type="text" placeholder="할 일을 정리해보세요" id="task-input" />
+    <button id="add-task">만들기</button>
+    <button id="delete-tasks">모두 삭제</button>
+    <ul id="task-list"></ul>
+
+    <script>
+      let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      const deleteTasksBtn = document.getElementById('delete-tasks');
+      const taskList = document.getElementById('task-list');
+      deleteTasksBtn.addEventListener('click', deleteAllTasks);
+
+      function deleteAllTasks() {
+        const taskList = document.getElementById('task-list');
+        localStorage.removeItem('tasks');
+        tasks.length = 0;
+        renderTasks();
+      }
+
+      function renderTasks() {
+        while (taskList.firstChild) {
+          taskList.removeChild(taskList.firstChild);
+        }
+        tasks.forEach((task, index) => {
+          const taskItem = document.createElement('li');
+          taskItem.textContent = task.name;
+          if (task.completed) {
+            taskItem.classList.add('completed');
+          }
+          const deleteBtn = document.createElement('button');
+          deleteBtn.textContent = '삭제';
+          deleteBtn.classList.add('delete-btn');
+          deleteBtn.addEventListener('click', () => {
+            tasks.splice(index, 1);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+          });
+          taskItem.appendChild(deleteBtn);
+          taskItem.addEventListener('click', () => {
+            task.completed = !task.completed;
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+          });
+          taskList.appendChild(taskItem);
+        });
+      }
+      
+      const addTaskBtn = document.getElementById('add-task');
+      addTaskBtn.addEventListener('click', addTask);
+
+      function addTask() {
+        const taskInput = document.getElementById('task-input');
+        const taskName = taskInput.value.trim();
+        if (taskName !== '') { 
+          tasks.push({ name: taskName, completed: false });
+          localStorage.setItem('tasks', JSON.stringify(tasks));
+          taskInput.value = '';
+          renderTasks();
+        }
+      }
+
+      // 화면 초기화 시 할 일 목록을 보여줍니다.
+      renderTasks();
+    </script>
+  </body>
+</html>
