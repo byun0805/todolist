@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <style>
+      /* 스타일 작성 */
+      body {
+        font-family: sans-serif;
+        background-color: #f2f2f2;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+        color: #333;
+      }
+      
+      form {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 40px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      
+      input[type="text"],
+      input[type="password"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+      }
+      
+      button[type="submit"] {
+        background-color: #0066cc;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      
+      button[type="submit"]:hover {
+        background-color: #0059b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>회원가입</h1>
+    <form id="signup-form">
+      <div>
+        <label for="username">아이디</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div>
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit">가입하기</button>
+    </form>
+    
+    <script>
+      const signupForm = document.getElementById('signup-form');
+
+      signupForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        localStorage.setItem(username, password);
+        alert('회원가입이 완료되었습니다.');
+        window.location.href = 'http://127.0.0.1:5501/login.html';
+        signupForm.reset();
+      });
+    </script>
+  </body>
+</html>
